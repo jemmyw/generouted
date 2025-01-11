@@ -51,7 +51,10 @@ export const generateRegularRoutes = <T extends BaseRoute, M>(
 
       if (root || node) {
         const current = root ? routes : parent.children
-        const found = current?.find((route) => route.path === path || route.id?.replace('/_layout', '').endsWith(path))
+        const found = current?.find((route2) => 
+          route2.path === path || 
+          (route2.id?.replace("/_layout", "").split("/").pop() === path)
+        )
         const props = group ? (route?.component ? { id: path, path: '/' } : { id: path }) : { path }
         if (found) found.children ??= []
         else current?.[insert]({ ...props, children: [] })

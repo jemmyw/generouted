@@ -43,8 +43,15 @@ const _404 = preservedRoutes?.['404']
 const Default = _app?.default || Outlet
 
 const Modals_ = () => {
-  const Modal = modalRoutes[useLocation().state?.modal] || Fragment
-  return <Modal />
+  const modals: string[] = useLocation().state?.modals ?? []
+  const Modals = modals.map((modal) => [modal, modalRoutes[modal] || Fragment] as [string, Element])
+  return (
+    <>
+      {Modals.map(([key, Modal]) => (
+        <Modal key={key} />
+      ))}
+    </>
+  )
 }
 
 const Layout = () => (

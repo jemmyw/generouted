@@ -26,16 +26,20 @@ export const hooks = <Path extends string, Params extends Record<string, any>, M
 
       return useMemo(() => {
         return {
-          current: location.state?.modal || '',
+          current: location.state?.modals || [],
           open: <P extends Path>(path: ModalPath, options?: Options<P>) => {
             const { at, state, ...opts } = options || {}
             const pathname = options?.params ? generatePath(at || '', options.params || {}) : at
-            navigate(pathname || location.pathname, { ...opts, state: { ...location.state, ...state, modal: path } })
+            const modals = location.state?.modals || []
+            modals.push(path)
+            navigate(pathname || location.pathname, { ...opts, state: { ...location.state, ...state, modals } })
           },
           close: <P extends Path>(options?: Options<P>) => {
             const { at, state, ...opts } = options || {}
             const pathname = options?.params ? generatePath(at || '', options.params || {}) : at
-            navigate(pathname || location.pathname, { ...opts, state: { ...location.state, ...state, modal: '' } })
+            const modals = location.state?.modals || []
+            modals.pop()
+            navigate(pathname || location.pathname, { ...opts, state: { ...location.state, ...state, modals } })
           },
         }
       }, [location, navigate])

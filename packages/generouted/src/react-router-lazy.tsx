@@ -47,8 +47,8 @@ const Modals_ = () => {
   const Modals = modals.map((modal) => [modal, modalRoutes[modal] || Fragment] as [string, Element])
   return (
     <>
-      {Modals.map(([key, Modal]) => (
-        <Modal key={key} />
+      {Modals.map(([key, Modal], idx) => (
+        <Modal key={`${key}-${idx}`} />
       ))}
     </>
   )
